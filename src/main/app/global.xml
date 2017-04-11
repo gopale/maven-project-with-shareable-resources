@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
@@ -13,4 +15,17 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     
 <!--     <context:property-placeholder location="classpath:*.properties"/>
     <context:property-placeholder location="shared-${env}.properties"/> -->
+    
+    <!-- MySQL Database using Generic Database Configuration -->
+	<spring:beans>
+        <spring:bean id="mySqlJdbcDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource" name="mySqlBean">
+            <spring:property name="driverClass" value="${mysql.db.driver}"/>
+            <spring:property name="url" value="${mysql.db.url}"/>
+            <spring:property name="username" value="${mysql.db.user}"/>
+            <spring:property name="password" value="${mysql.db.password}"/>
+        </spring:bean>
+    </spring:beans>
+    
+    <!-- Configure your DB connector referencing your JDBC specs -->
+    <db:generic-config name="Generic_MySQL_Database_Configuration"  doc:name="Generic Database Configuration" dataSource-ref="mySqlJdbcDataSource"/>    
 </mule>
